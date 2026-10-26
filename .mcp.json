@@ -6,7 +6,9 @@
     },
     "mermaid": {
       "command": "npx",
-      "args": ["-y", "mcp-mermaid@0.4.1"]
+      "args": ["-y", "mcp-mermaid@0.4.1"],
+      "disabled": false,
+      "autoApprove": ["generate", "validate", "mermaid_to_svg", "render"]
     }
   }
 }
