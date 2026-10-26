@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item 1 — As-built &amp; Target Diagrams</title>
+<style>
+  :root { --bg:#0f1220; --card:#1a1f35; --ink:#e8eaf2; --muted:#9aa3c0; --accent:#8b7bf0; --ok:#3ecf8e; --warn:#f0b454; --line:#2a3052; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:860px; margin:0 auto; padding:32px 24px 72px; }
+  a.back { color:var(--accent); text-decoration:none; font-size:14px; }
+  .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; margin-right:10px; vertical-align:middle; }
+  h1 { font-size:26px; margin:18px 0 6px; }
+  .tag { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin:16px 0; }
+  section.problem { border-left:4px solid var(--warn); }
+  section.done { border-left:4px solid var(--ok); }
+  h2 { font-size:15px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  ul { margin:8px 0 0; padding-left:20px; } li { margin:6px 0; }
+  code { background:#0c0f1c; border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:13px; }
+  .files { font-size:13px; color:var(--muted); }
+  .files a { color:var(--accent); text-decoration:none; }
+  .chk { color:var(--ok); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All items</a>
+  <h1><span class="num">1</span>As-built &amp; Target Diagrams</h1>
+  <div class="tag">Mermaid source + citation list + inferred-items list (R1)</div>
+
+  <section class="problem">
+    <h2>Problem statement</h2>
+    <p>Produce, using the Mermaid MCP, a <strong>container view</strong> and a <strong>sequence diagram of the approval path</strong> for the system as it exists today, citing a file or symbol for <em>every</em> element, listing separately everything the agent only inferred, and correcting whatever was wrong. Then draw the <strong>target state</strong> once Azure SQL persistence and PayEx are in, clearly marking which parts do not exist yet. Constraint: <code>ops/</code> describes a planned deployment, so the diagrams must follow the code, not <code>ops/</code>.</p>
+  </section>
+
+  <section class="done">
+    <h2>What we did</h2>
+    <ul>
+      <li><strong>As-built doc</strong> with exactly one Mermaid container diagram and one approval-path sequence diagram, both rendered through the <strong>Mermaid MCP</strong> with zero syntax errors.</li>
+      <li><strong>Citations (C1–C21):</strong> every diagram element mapped to a real file/symbol (e.g. <code>SessionAuthMiddleware.InvokeAsync</code>, <code>ApprovalService.Approve</code>, <code>IInvoiceRepository.Update</code>).</li>
+      <li><strong>Inferred (I1–I5):</strong> a separate list of elements the agent inferred (the browser actor, HTTP/Bearer edges, DI relationships, status-code outcomes) — kept apart from citations, with no gaps or overlaps.</li>
+      <li><strong>Corrections:</strong> recorded the one real fix — <code>EnsurePending</code> is a <em>private static</em> method, not a public/callable one.</li>
+      <li><strong>Target-state doc:</strong> container + sequence diagrams adding Azure SQL, PayEx, and a submission worker/outbox, each marked <span class="chk">not-existing-yet</span> via a two-style <code>classDef</code> + legend; the 30s ambiguous-timeout branch shows both outcome paths. Existing components cited to code; planned components never cited.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Source files</h2>
+    <p class="files">
+      <a href="../architecture/as-built.md">docs/architecture/as-built.md</a><br>
+      <a href="../architecture/target-state.md">docs/architecture/target-state.md</a>
+    </p>
+  </section>
+</div>
+</body>
+</html>

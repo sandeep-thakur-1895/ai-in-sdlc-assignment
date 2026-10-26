@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item 5 — Review Evaluation</title>
+<style>
+  :root { --bg:#0f1220; --card:#1a1f35; --ink:#e8eaf2; --muted:#9aa3c0; --accent:#8b7bf0; --ok:#3ecf8e; --warn:#f0b454; --line:#2a3052; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:860px; margin:0 auto; padding:32px 24px 72px; }
+  a.back { color:var(--accent); text-decoration:none; font-size:14px; }
+  .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; margin-right:10px; vertical-align:middle; }
+  h1 { font-size:26px; margin:18px 0 6px; }
+  .tag { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin:16px 0; }
+  section.problem { border-left:4px solid var(--warn); }
+  section.done { border-left:4px solid var(--ok); }
+  h2 { font-size:15px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  ul { margin:8px 0 0; padding-left:20px; } li { margin:6px 0; }
+  code { background:#0c0f1c; border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:13px; }
+  table { width:100%; border-collapse:collapse; margin-top:12px; font-size:13px; }
+  th,td { border:1px solid var(--line); padding:7px 9px; text-align:left; }
+  th { color:var(--muted); font-weight:600; }
+  .files { font-size:13px; color:var(--muted); } .files a { color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All items</a>
+  <h1><span class="num">5</span>Review Evaluation</h1>
+  <div class="tag">Two added cases + three-run and changed-variable results (R4)</div>
+
+  <section class="problem">
+    <h2>Problem statement</h2>
+    <p>Run the ten fixed cases in <code>ops/evals</code> <strong>three times</strong> against one review prompt and report <strong>caught / missed / false-alarm rates</strong>, not anecdotes. Add <strong>two cases of your own</strong> from real defects, at least one clean. Then change <strong>exactly one variable</strong> (prompt, model, or context) and run the set again. Say whether it improved and how confident you are at that sample size.</p>
+  </section>
+
+  <section class="done">
+    <h2>What we did</h2>
+    <ul>
+      <li>Ran the fixed ten 3&times; against prompt v1; reported rates (ten-case baseline: 81.0% caught, 19.0% missed, 11.1% false alarm).</li>
+      <li>Added <strong>case-11</strong> (defect: <code>.Result</code> sync-over-async blocking) and <strong>case-12</strong> (clean: guard-clause extraction).</li>
+      <li>Changed exactly one variable — the <strong>prompt (v1&rarr;v2)</strong>, model and context held constant — and re-ran the full set.</li>
+      <li><strong>Verdict:</strong> direction positive on every metric, but <strong>confidence low</strong> — the caught gain is ~3 correlated instances, the false-alarm gain is a single event, and v2 was tuned on the test set.</li>
+    </ul>
+    <table>
+      <tr><th>Row</th><th>Prompt</th><th>Caught /8</th><th>Missed /8</th><th>False alarm /4</th></tr>
+      <tr><td>Baseline run 1</td><td>v1</td><td>7</td><td>1</td><td>1</td></tr>
+      <tr><td>Baseline run 2</td><td>v1</td><td>6</td><td>2</td><td>1</td></tr>
+      <tr><td>Baseline run 3</td><td>v1</td><td>7</td><td>1</td><td>0</td></tr>
+      <tr><td><strong>Changed-variable (v2) total</strong></td><td>v2</td><td><strong>23/24</strong></td><td><strong>1/24</strong></td><td><strong>1/12</strong></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Source files</h2>
+    <p class="files">
+      <a href="../../ops/evals/cases/case-11.diff">ops/evals/cases/case-11.diff</a>,
+      <a href="../../ops/evals/cases/case-12.diff">case-12.diff</a><br>
+      <a href="../../ops/evals/report.md">ops/evals/report.md</a> (full tables + confidence)<br>
+      <a href="../../ops/evals/results.csv">ops/evals/results.csv</a> (raw per-case data)
+    </p>
+  </section>
+</div>
+</body>
+</html>

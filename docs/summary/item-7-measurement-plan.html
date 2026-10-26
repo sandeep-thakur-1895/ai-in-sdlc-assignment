@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item 7 — Measurement Plan</title>
+<style>
+  :root { --bg:#0f1220; --card:#1a1f35; --ink:#e8eaf2; --muted:#9aa3c0; --accent:#8b7bf0; --ok:#3ecf8e; --warn:#f0b454; --line:#2a3052; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:860px; margin:0 auto; padding:32px 24px 72px; }
+  a.back { color:var(--accent); text-decoration:none; font-size:14px; }
+  .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; margin-right:10px; vertical-align:middle; }
+  h1 { font-size:26px; margin:18px 0 6px; }
+  .tag { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin:16px 0; }
+  section.problem { border-left:4px solid var(--warn); }
+  section.done { border-left:4px solid var(--ok); }
+  h2 { font-size:15px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  ul { margin:8px 0 0; padding-left:20px; } li { margin:6px 0; }
+  code { background:#0c0f1c; border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:13px; }
+  .nums { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+  .metric { flex:1; min-width:220px; background:#0c0f1c; border:1px solid var(--ok); border-radius:10px; padding:14px; }
+  .metric .big { font-size:24px; font-weight:700; color:var(--ok); }
+  .metric .lbl { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .files { font-size:13px; color:var(--muted); } .files a { color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All items</a>
+  <h1><span class="num">7</span>Measurement Plan</h1>
+  <div class="tag">Baseline plan + the two numbers captured (R5.3–R5.4)</div>
+
+  <section class="problem">
+    <h2>Problem statement</h2>
+    <p>Write the baseline you would capture before the rotation starts — <strong>lead time for changes</strong>, <strong>change failure rate</strong>, <strong>review turnaround</strong> — naming the exact source or query for each. Then actually <strong>capture the two</strong> you can get today from the repository and its CI history.</p>
+  </section>
+
+  <section class="done">
+    <h2>What we did</h2>
+    <ul>
+      <li><strong>Baseline plan</strong> for all three metrics, each with its exact source/query (git + Azure deploy history for lead time; CI run history + incident log for change failure rate; GitHub PR API for review turnaround).</li>
+      <li>Captured two real numbers today from <code>ops/pipeline/run-timings.csv</code>; deferred the two that need a deploy log / PR API, and refused to invent a lead-time median from 6 seeded commits.</li>
+    </ul>
+    <div class="nums">
+      <div class="metric"><div class="lbl">Change failure rate</div><div class="big">0 / 8</div><div class="lbl">on <code>main</code> (10% across all 20 CI runs)</div></div>
+      <div class="metric"><div class="lbl">Deployment cadence</div><div class="big">~58 h</div><div class="lbl">median between <code>main</code> deploys (8 deploys / 11.3 days)</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Source file</h2>
+    <p class="files"><a href="../risk-audit-and-measurement-plan.md">docs/risk-audit-and-measurement-plan.md</a> — Part B (recomputable from <a href="../../ops/pipeline/run-timings.csv">ops/pipeline/run-timings.csv</a>)</p>
+  </section>
+</div>
+</body>
+</html>

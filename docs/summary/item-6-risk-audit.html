@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item 6 — Risk Audit</title>
+<style>
+  :root { --bg:#0f1220; --card:#1a1f35; --ink:#e8eaf2; --muted:#9aa3c0; --accent:#8b7bf0; --ok:#3ecf8e; --warn:#f0b454; --danger:#f07a7a; --line:#2a3052; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:860px; margin:0 auto; padding:32px 24px 72px; }
+  a.back { color:var(--accent); text-decoration:none; font-size:14px; }
+  .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; margin-right:10px; vertical-align:middle; }
+  h1 { font-size:26px; margin:18px 0 6px; }
+  .tag { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin:16px 0; }
+  section.problem { border-left:4px solid var(--warn); }
+  section.done { border-left:4px solid var(--ok); }
+  h2 { font-size:15px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  ul { margin:8px 0 0; padding-left:20px; } li { margin:6px 0; }
+  code { background:#0c0f1c; border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:13px; }
+  .legs { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .leg { flex:1; min-width:180px; background:#0c0f1c; border:1px solid var(--danger); border-radius:8px; padding:10px 12px; font-size:13px; }
+  .leg b { color:var(--danger); }
+  .decision { background:rgba(139,123,240,.12); border:1px solid rgba(139,123,240,.4); border-radius:8px; padding:10px 14px; margin-top:12px; font-size:14px; }
+  .files { font-size:13px; color:var(--muted); } .files a { color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All items</a>
+  <h1><span class="num">6</span>Risk Audit</h1>
+  <div class="tag">Lethal-trifecta audit with a recorded decision (R5.1–R5.2)</div>
+
+  <section class="problem">
+    <h2>Problem statement</h2>
+    <p>Audit the agent setup against the <strong>lethal trifecta</strong> — private data, untrusted content, external communication — and name which legs are present. Then either <strong>redesign to remove one leg</strong> or <strong>accept the risk in writing</strong> with a trigger that would make you revisit.</p>
+  </section>
+
+  <section class="done">
+    <h2>What we did</h2>
+    <p>Found <strong>all three legs present</strong> in the triage/review + MCP setup over the planned production service:</p>
+    <div class="legs">
+      <div class="leg"><b>Leg 1 — Private data</b><br>logs, 7-year audit trail, PayEx API key in prod config.</div>
+      <div class="leg"><b>Leg 2 — Untrusted content</b><br>production logs carry injectable fields; Playwright MCP renders arbitrary pages.</div>
+      <div class="leg"><b>Leg 3 — External comms</b><br>Playwright browser can hit any URL; no egress restriction.</div>
+    </div>
+    <ul>
+      <li>Described the concrete end-to-end injection attack this enables (crafted invoice field &rarr; logs &rarr; triage agent &rarr; browser exfiltrates the PayEx key).</li>
+      <li><strong>Redesigned to sever leg 3:</strong> no network-acting tools in the triage agent, egress allowlist, secrets out of agent reach, pinned MCP launch.</li>
+      <li>Accepted the residual (legs 1+2, intrinsic to triage) <strong>in writing</strong>, with a four-condition revisit trigger.</li>
+    </ul>
+    <div class="decision"><strong>Recorded decision:</strong> break the trifecta by removing leg 3 (external communication); accept legs 1+2 with a revisit trigger that re-arms a full audit if any network-acting tool, widened egress, logged secret, or promotion-to-act appears.</div>
+  </section>
+
+  <section>
+    <h2>Source file</h2>
+    <p class="files"><a href="../risk-audit-and-measurement-plan.md">docs/risk-audit-and-measurement-plan.md</a> — Part A</p>
+  </section>
+</div>
+</body>
+</html>

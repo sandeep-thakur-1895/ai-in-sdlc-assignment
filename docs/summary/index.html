@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assignment Hand-In — Summary</title>
+<style>
+  :root { --bg:#0f1220; --card:#1a1f35; --ink:#e8eaf2; --muted:#9aa3c0; --accent:#8b7bf0; --ok:#3ecf8e; --line:#2a3052; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.55; }
+  header { padding:48px 24px 24px; max-width:960px; margin:0 auto; }
+  h1 { font-size:28px; margin:0 0 8px; }
+  .sub { color:var(--muted); font-size:15px; }
+  main { max-width:960px; margin:0 auto; padding:8px 24px 64px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; margin-top:16px; }
+  a.card { display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; transition:transform .12s ease, border-color .12s ease; }
+  a.card:hover { transform:translateY(-3px); border-color:var(--accent); }
+  .num { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:8px; background:var(--accent); color:#fff; font-weight:700; font-size:14px; margin-bottom:10px; }
+  .card h2 { font-size:16px; margin:4px 0 6px; }
+  .card p { color:var(--muted); font-size:13px; margin:0; }
+  footer { max-width:960px; margin:0 auto; padding:0 24px 48px; color:var(--muted); font-size:13px; }
+  .pill { display:inline-block; background:rgba(62,207,142,.12); color:var(--ok); border:1px solid rgba(62,207,142,.4); border-radius:999px; padding:2px 10px; font-size:12px; margin-top:8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Production-Readiness Assignment — Hand-In Summary</h1>
+  <div class="sub">Invoice Approval service. One summary page per hand-in item: the problem statement first, then what was delivered. <span class="pill">8 / 8 items</span></div>
+</header>
+<main>
+  <div class="grid">
+    <a class="card" href="item-1-diagrams.html"><span class="num">1</span><h2>As-built &amp; target diagrams</h2><p>Mermaid source, citation list, inferred-items list.</p></a>
+    <a class="card" href="item-2-architecture-test.html"><span class="num">2</span><h2>Architecture test</h2><p>One structural rule that runs green, with the command.</p></a>
+    <a class="card" href="item-3-adr.html"><span class="num">3</span><h2>Exactly-once ADR</h2><p>PayEx submission decision record + self-critique.</p></a>
+    <a class="card" href="item-4-autonomy-policy.html"><span class="num">4</span><h2>Autonomy policy</h2><p>One page, one workflow, day-one level stated.</p></a>
+    <a class="card" href="item-5-review-eval.html"><span class="num">5</span><h2>Review evaluation</h2><p>Two added cases + 3-run and changed-variable results.</p></a>
+    <a class="card" href="item-6-risk-audit.html"><span class="num">6</span><h2>Risk audit</h2><p>Lethal-trifecta audit with a recorded decision.</p></a>
+    <a class="card" href="item-7-measurement-plan.html"><span class="num">7</span><h2>Measurement plan</h2><p>Baseline plan + the two numbers captured.</p></a>
+    <a class="card" href="item-8-ai-log.html"><span class="num">8</span><h2>AI augmentation log</h2><p>How AI was used, and where it was wrong.</p></a>
+  </div>
+</main>
+<footer>
+  Each page states the <strong>problem</strong> it answers, then <strong>what was done</strong>, with links to the source artifacts in the repo. Open <code>index.html</code> in a browser.
+</footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+diff --git a/backend/src/InvoiceApp.Domain/ApprovalService.cs b/backend/src/InvoiceApp.Domain/ApprovalService.cs
+--- a/backend/src/InvoiceApp.Domain/ApprovalService.cs
++++ b/backend/src/InvoiceApp.Domain/ApprovalService.cs
+@@ -44,10 +44,9 @@ public class ApprovalService
+     public Invoice Reject(string invoiceId, string approver, string reason)
+     {
+-        if (string.IsNullOrWhiteSpace(reason))
+-        {
+-            throw new ArgumentException("A reason is required to reject an invoice.", nameof(reason));
+-        }
++        EnsureReasonProvided(reason);
+
+         var invoice = Find(invoiceId);
+         EnsurePending(invoice);
+@@ -60,6 +59,14 @@ public class ApprovalService
+         return invoice;
+     }
+
++    private static void EnsureReasonProvided(string reason)
++    {
++        if (string.IsNullOrWhiteSpace(reason))
++        {
++            throw new ArgumentException("A reason is required to reject an invoice.", nameof(reason));
++        }
++    }
++
+     private Invoice Find(string invoiceId) =>
+         _repository.GetById(invoiceId)
+         ?? throw new KeyNotFoundException($"Invoice {invoiceId} was not found.");

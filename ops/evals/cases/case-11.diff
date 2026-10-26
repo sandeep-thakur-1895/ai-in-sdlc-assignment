@@ -1,0 +1,15 @@
+diff --git a/backend/src/InvoiceApp.Api/Controllers/ApprovalsController.cs b/backend/src/InvoiceApp.Api/Controllers/ApprovalsController.cs
+--- a/backend/src/InvoiceApp.Api/Controllers/ApprovalsController.cs
++++ b/backend/src/InvoiceApp.Api/Controllers/ApprovalsController.cs
+@@ -28,9 +28,14 @@ public class ApprovalsController : ApiControllerBase
+     [HttpPost("{id}/approve")]
+     [RequireRole("Approver")]
+     public IActionResult Approve(string id)
+     {
+         var invoice = _approvals.Approve(id, CurrentUser.Name);
+
+-        return Ok(DecisionResponse.From(invoice));
++        var receipt = _payEx.SubmitAsync(invoice).Result;
++
++        return Ok(DecisionResponse.From(invoice, receipt));
+     }

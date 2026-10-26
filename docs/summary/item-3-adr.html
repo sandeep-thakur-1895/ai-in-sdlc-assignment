@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item 3 — Exactly-Once ADR</title>
+<style>
+  :root { --bg:#0f1220; --card:#1a1f35; --ink:#e8eaf2; --muted:#9aa3c0; --accent:#8b7bf0; --ok:#3ecf8e; --warn:#f0b454; --line:#2a3052; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:860px; margin:0 auto; padding:32px 24px 72px; }
+  a.back { color:var(--accent); text-decoration:none; font-size:14px; }
+  .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; margin-right:10px; vertical-align:middle; }
+  h1 { font-size:26px; margin:18px 0 6px; }
+  .tag { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin:16px 0; }
+  section.problem { border-left:4px solid var(--warn); }
+  section.done { border-left:4px solid var(--ok); }
+  h2 { font-size:15px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  ul { margin:8px 0 0; padding-left:20px; } li { margin:6px 0; }
+  code { background:#0c0f1c; border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:13px; }
+  .files { font-size:13px; color:var(--muted); } .files a { color:var(--accent); text-decoration:none; }
+  .decision { background:rgba(139,123,240,.12); border:1px solid rgba(139,123,240,.4); border-radius:8px; padding:10px 14px; margin-top:12px; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All items</a>
+  <h1><span class="num">3</span>Exactly-Once Submission ADR</h1>
+  <div class="tag">PayEx decision record, incl. "Where the agent was wrong or useless" (R2)</div>
+
+  <section class="problem">
+    <h2>Problem statement</h2>
+    <p>How do you guarantee an approved invoice reaches PayEx <strong>exactly once</strong>? Compare at least three options (idempotency key + dedupe table, transactional outbox + worker, optimistic submission + nightly reconciliation), lay out the trade-offs, then stress it three ways: state a preference for a different option and see if the recommendation moves; ask how it fails at 3 a.m. on the last day of the month; ask what it costs to build and to run. Write the record with a "what would make me revisit this" section and a <strong>"Where the agent was wrong or useless"</strong> section. Account for: PayEx times out at 30s and a timeout doesn't mean failure; Service Bus is provisioned but unused; SOC 2 needs a 7-year audit trail.</p>
+  </section>
+
+  <section class="done">
+    <h2>What we did</h2>
+    <ul>
+      <li><strong>Three options</strong> each scored on 30s-timeout behaviour, behaviour at ~80 approvals/min at month-end, build cost, run cost, and dominant failure mode.</li>
+      <li><strong>Decision:</strong> transactional outbox + worker, with an idempotency key carried to PayEx — keeps the 30s call off the request path (the INC-2041 lesson) and makes ambiguous timeouts a visible <code>needs_reconciliation</code> state.</li>
+      <li><strong>Stress test 1</strong> — preferred Option C; recommendation held, with the one condition that would move it.</li>
+      <li><strong>Stress test 2</strong> — 3 a.m. failure answered via INC-2047's silent-worker pattern (filter mismatch, 200s while nothing is submitted).</li>
+      <li><strong>Stress test 3</strong> — build vs run cost stated, build cost named as the strongest counter-argument.</li>
+      <li><strong>Revisit triggers</strong> (6) and a candid <strong>"Where the agent was wrong or useless"</strong> section (unverified PayEx contract, hand-wavy costs, missing worker-sizing math).</li>
+    </ul>
+    <div class="decision"><strong>Recorded decision:</strong> transactional outbox + worker + idempotency key, adopted for the January release — with the monitoring (outbox-age alerting) treated as part of the decision, not optional.</div>
+  </section>
+
+  <section>
+    <h2>Source file</h2>
+    <p class="files"><a href="../architecture/adr/0001-payex-exactly-once.md">docs/architecture/adr/0001-payex-exactly-once.md</a></p>
+  </section>
+</div>
+</body>
+</html>
