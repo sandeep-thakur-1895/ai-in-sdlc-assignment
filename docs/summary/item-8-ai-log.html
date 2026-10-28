@@ -39,14 +39,16 @@
       <li><strong>Per-deliverable record</strong> of AI usage across items 1–7, including the self-corrections (the <code>EnsurePending</code> visibility fix, the refusal to fake a test result before the SDK existed, the redirect to actually use the Mermaid MCP).</li>
       <li><strong>Tools recorded:</strong> Mermaid MCP for diagram validation, .NET 8 SDK installed mid-session, grounding against <code>backend/</code> and the <code>ops/</code> evidence packs.</li>
       <li><strong>Helped vs. human-essential</strong> split, and a list of concrete AI failure modes observed this session (validated the wrong way first, assumed tooling was present, needed evidence to overturn a prior, scored its own eval).</li>
-      <li>A provenance note: the log is a human-readable summary; the authoritative evidence is the committed files and git history.</li>
+      <li><strong>Structured JSONL log</strong> in the reviewer's requested schema — one JSON object per interaction (13 entries) with <code>ai_tool</code>, <code>model</code>, <code>mode</code>, <code>agent_type</code>, <code>skills_used</code>, <code>subagents_used</code>, <code>mcp_tools_used</code>, <code>tools_used</code>, <code>human_decision</code>, <code>action_verification</code>, <code>limitation</code>, <code>status</code>, and real <code>artifacts</code>. All lines validated as JSON.</li>
+      <li>A provenance note: the markdown is a human-readable summary and the JSONL is the structured companion; timestamps are approximate session markers while commit refs (<code>7eadb92</code>, <code>6fc88cf</code>) and file artifacts are exact.</li>
     </ul>
   </section>
 
   <section>
     <h2>Source files</h2>
     <p class="files">
-      <a href="../ai-augmentation-log.md">docs/ai-augmentation-log.md</a><br>
+      <a href="../ai-augmentation-log.jsonl">docs/ai-augmentation-log.jsonl</a> &nbsp;<strong>(structured log — reviewer schema)</strong><br>
+      <a href="../ai-augmentation-log.md">docs/ai-augmentation-log.md</a> (readable summary)<br>
       <a href="../SUBMISSION.md">docs/SUBMISSION.md</a> (index mapping all 8 items to files)
     </p>
   </section>
