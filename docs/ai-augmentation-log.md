@@ -5,6 +5,26 @@ well, where it was wrong or needed correcting, and what a human drove. Written t
 rather than flattering — the same spirit as the "Where the agent was wrong or useless" section in
 the ADR.
 
+> **Structured log:** the machine-readable companion to this summary is
+> [`ai-augmentation-log.jsonl`](ai-augmentation-log.jsonl) — one JSON object per interaction, in
+> the reviewer's requested schema (id, timestamp, stage, agent/agent_type, ai_tool, model, mode,
+> skills_used, subagents_used, mcp_tools_used, tools_used, human_decision, action_verification,
+> limitation, status, artifacts). 13 entries covering orchestration, R1–R5, packaging, and publish.
+
+## Format and tooling note (for the reviewer)
+
+- **AI tool & model:** Kiro IDE agent; model shown as `Auto (task-selected)` — Kiro selects the
+  model per task, so a single fixed model name is not exposed to the session.
+- **Agent & mode:** the primary agent is Kiro's **built-in agent** in **agent mode**; spec work was
+  delegated to the built-in **`spec-task-execution` sub-agent** (recorded per entry).
+- **MCP:** the **Mermaid MCP** (`mcp-mermaid`) was used to validate/render every diagram; the
+  Playwright MCP was configured but not used for these artifacts.
+- **Honesty of reconstruction:** timestamps in the JSONL are approximate session markers (the
+  exact wall-clock of each turn is not machine-logged by the tool); the **commit references and
+  file artifacts are exact** (`7eadb92`, `6fc88cf`). Where a field does not apply it is `null`.
+  This is a faithful reconstruction, not a verbatim tool-emitted trace — stated plainly because
+  the tool does not auto-emit a per-turn JSONL.
+
 ## Environment and tools
 
 - **Agent:** Kiro, driving file edits, shell commands, and sub-agents.

@@ -1,0 +1,469 @@
+[
+  {
+    "id": "20261026T000000Z-orchestration-run-all-tasks",
+    "timestamp": "2026-10-26T00:00:00Z",
+    "stage": "setup",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T000500Z-r1-as-built-diagrams"
+    ],
+    "parent_task": null,
+    "context": "Production-readiness artifacts for the Invoice Approval service (ai-in-sdlc-assignment)",
+    "request": "Run all tasks for the production-readiness-artifacts spec; orchestrate execution via the DAG task tools.",
+    "skills_used": [],
+    "subagents_used": [
+      {
+        "name": "spec-task-execution",
+        "type": "built-in",
+        "task": "Execute wave-scheduled spec tasks (grounding verification, test authoring, diagram authoring)",
+        "status": "partial"
+      }
+    ],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "taskList",
+      "taskUpdate",
+      "invoke_sub_agent",
+      "read_files",
+      "list_directory",
+      "execute_pwsh"
+    ],
+    "suggestion": "Queue tasks by wave and dispatch ready tasks in parallel.",
+    "human_decision": "User initiated 'Run all tasks'; later issued 'Cancel' to pause the automated run and drive items individually.",
+    "action_verification": "taskList confirmed 5/20 tasks completed before the run was paused by the user.",
+    "limitation": "The .NET SDK was absent, blocking test-execution tasks until it was installed later in the session.",
+    "status": "partial",
+    "artifacts": [
+      ".kiro/specs/production-readiness-artifacts/tasks.md"
+    ]
+  },
+  {
+    "id": "20261026T000500Z-r1-as-built-diagrams",
+    "timestamp": "2026-10-26T00:05:00Z",
+    "stage": "R1-as-built",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T001500Z-r1-citations-inferred",
+      "20261026T002500Z-mcp-validate-diagrams"
+    ],
+    "parent_task": "20261026T000000Z-orchestration-run-all-tasks",
+    "context": "R1.1 / R1.2 — container view + approval-path sequence diagram of the as-built system",
+    "request": "Produce a Mermaid container view and a sequence diagram for the approval path, citing a file or symbol for every element.",
+    "skills_used": [],
+    "subagents_used": [
+      {
+        "name": "spec-task-execution",
+        "type": "built-in",
+        "task": "Author as-built.md container and sequence diagrams grounded in backend/ source",
+        "status": "completed"
+      }
+    ],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "read_files",
+      "fs_write",
+      "fs_append",
+      "getDiagnostics"
+    ],
+    "suggestion": "Draw at the C4 container level of abstraction using a Mermaid flowchart; annotate each node with its file/symbol.",
+    "human_decision": "User confirmed the container-level flowchart satisfies 'container view'; declined switching to strict C4Container notation.",
+    "action_verification": "All cited symbols verified against backend/ source (ApprovalsController, ApprovalService, SessionAuthMiddleware, IInvoiceRepository, InMemoryInvoiceRepository, Program.cs).",
+    "limitation": null,
+    "status": "applied",
+    "artifacts": [
+      "docs/architecture/as-built.md"
+    ]
+  },
+  {
+    "id": "20261026T001500Z-r1-citations-inferred",
+    "timestamp": "2026-10-26T00:15:00Z",
+    "stage": "R1-citations",
+    "agent": "sub-agent",
+    "agent_name": "spec-task-execution",
+    "agent_type": "sub-agent",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T000500Z-r1-as-built-diagrams"
+    ],
+    "parent_task": "20261026T000500Z-r1-as-built-diagrams",
+    "context": "R1.3 / R1.4 / R1.5 — citation list, inferred-items list, corrections",
+    "request": "Add a Citations list (one entry per element, no gaps), a separate Inferred list, and a Corrections section to as-built.md.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "read_file",
+      "fs_append",
+      "getDiagnostics"
+    ],
+    "suggestion": "Partition every diagram element into exactly one of Cited (C1-C21) or Inferred (I1-I5); record the EnsurePending visibility fix in Corrections.",
+    "human_decision": null,
+    "action_verification": "Partition checked for no gaps/overlaps; the one correction (EnsurePending is private static) verified against ApprovalService.cs.",
+    "limitation": "Agent initially described EnsurePending as a public/callable method — corrected after reading the source.",
+    "status": "applied",
+    "artifacts": [
+      "docs/architecture/as-built.md"
+    ]
+  },
+  {
+    "id": "20261026T002500Z-mcp-validate-diagrams",
+    "timestamp": "2026-10-26T00:25:00Z",
+    "stage": "R1-validation",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T000500Z-r1-as-built-diagrams",
+      "20261026T004500Z-r1-target-state"
+    ],
+    "parent_task": null,
+    "context": "Validate all Mermaid diagrams render with zero syntax errors",
+    "request": "Use the Mermaid MCP to render/validate the container and sequence diagrams.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [
+      {
+        "server": "mermaid",
+        "tool": "generate_mermaid_diagram",
+        "purpose": "Render container and sequence diagrams to SVG to confirm zero syntax errors"
+      }
+    ],
+    "tools_used": [
+      "mcp_mermaid_generate_mermaid_diagram"
+    ],
+    "suggestion": "Validate through the MCP rather than editor diagnostics alone.",
+    "human_decision": "User explicitly required use of the Mermaid MCP after the agent first validated with editor diagnostics only.",
+    "action_verification": "Both as-built diagrams and both target-state diagrams rendered to valid SVG with zero errors.",
+    "limitation": "Mermaid MCP first connection timed out on npx cold-start (download); resolved by pre-installing mcp-mermaid@0.4.1.",
+    "status": "applied",
+    "artifacts": [
+      "docs/architecture/as-built.md",
+      "docs/architecture/target-state.md",
+      ".mcp.json",
+      ".kiro/settings/mcp.json",
+      "docs/mcp-setup.md"
+    ]
+  },
+  {
+    "id": "20261026T003500Z-sdk-install",
+    "timestamp": "2026-10-26T00:35:00Z",
+    "stage": "environment",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T004000Z-r1-architecture-test"
+    ],
+    "parent_task": null,
+    "context": "The architecture test (R1.7) requires a .NET SDK that was not installed",
+    "request": "Install .NET so the structural test can actually run.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "execute_pwsh"
+    ],
+    "suggestion": "Install .NET 8 SDK user-locally via the official dotnet-install script (no admin required).",
+    "human_decision": "User approved installing .NET.",
+    "action_verification": "dotnet --version reported 8.0.426 after install.",
+    "limitation": "Machine had no dotnet on PATH initially; agent refused to fabricate a test result before the SDK existed.",
+    "status": "applied",
+    "artifacts": []
+  },
+  {
+    "id": "20261026T004000Z-r1-architecture-test",
+    "timestamp": "2026-10-26T00:40:00Z",
+    "stage": "R1-test",
+    "agent": "sub-agent",
+    "agent_name": "spec-task-execution",
+    "agent_type": "sub-agent",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T003500Z-sdk-install"
+    ],
+    "parent_task": null,
+    "context": "R1.7 — one architecture test that actually runs, with the command written down",
+    "request": "Encode exactly one structural rule (Domain must not depend on web/storage assemblies) as a runnable xUnit test; document and run the command.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "fs_write",
+      "execute_pwsh",
+      "getDiagnostics"
+    ],
+    "suggestion": "Reflect over the Domain assembly's referenced assemblies vs a forbidden-prefix list; no network.",
+    "human_decision": null,
+    "action_verification": "Ran 'dotnet test --filter FullyQualifiedName~DomainDependencyRuleTests' three times: Passed 1 / Failed 0 / exit 0 each run (deterministic).",
+    "limitation": null,
+    "status": "applied",
+    "artifacts": [
+      "backend/tests/InvoiceApp.Tests/DomainDependencyRuleTests.cs",
+      "backend/tests/InvoiceApp.Tests/README.md"
+    ]
+  },
+  {
+    "id": "20261026T004500Z-r1-target-state",
+    "timestamp": "2026-10-26T00:45:00Z",
+    "stage": "R1-target",
+    "agent": "sub-agent",
+    "agent_name": "spec-task-execution",
+    "agent_type": "sub-agent",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [
+      "20261026T002500Z-mcp-validate-diagrams"
+    ],
+    "parent_task": null,
+    "context": "R1.6 — target-state diagrams with Azure SQL and PayEx, planned parts marked",
+    "request": "Draw target container + sequence diagrams adding Azure SQL and PayEx, marking not-yet-existing parts via style and legend; show the 30s ambiguous-timeout branch.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [
+      {
+        "server": "mermaid",
+        "tool": "generate_mermaid_diagram",
+        "purpose": "Validate target-state container and sequence diagrams"
+      }
+    ],
+    "tools_used": [
+      "fs_write",
+      "mcp_mermaid_generate_mermaid_diagram",
+      "getDiagnostics"
+    ],
+    "suggestion": "Use two Mermaid classDefs (existing vs planned) + a legend; never cite planned components to code.",
+    "human_decision": null,
+    "action_verification": "Both target diagrams rendered to valid SVG; Azure SQL/PayEx/worker/outbox/Service Bus carry the not-existing-yet style.",
+    "limitation": null,
+    "status": "applied",
+    "artifacts": [
+      "docs/architecture/target-state.md"
+    ]
+  },
+  {
+    "id": "20261026T010000Z-r2-adr",
+    "timestamp": "2026-10-26T01:00:00Z",
+    "stage": "R2-adr",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [],
+    "parent_task": null,
+    "context": "R2 — exactly-once PayEx submission decision record",
+    "request": "Write an ADR comparing idempotency-key, transactional-outbox, and optimistic-reconciliation options; stress it three ways; include revisit triggers and a 'Where the agent was wrong or useless' section.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "read_files",
+      "fs_write",
+      "getDiagnostics"
+    ],
+    "suggestion": "Recommend transactional outbox + worker + idempotency key; keep the 30s call off the request path (INC-2041 lesson).",
+    "human_decision": "Record is the engineer's to own and ratify; AI provided the draft and self-critique.",
+    "action_verification": "Grounded in ops/incidents/INC-2041 (socket exhaustion) and INC-2047 (silent Service Bus filter mismatch), verified by reading those evidence packs.",
+    "limitation": "PayEx idempotency contract is unverified (no PayEx code in repo); cost estimates are rough; no worker-sizing math — all disclosed in the ADR self-critique.",
+    "status": "applied",
+    "artifacts": [
+      "docs/architecture/adr/0001-payex-exactly-once.md"
+    ]
+  },
+  {
+    "id": "20261026T012000Z-r3-autonomy-policy",
+    "timestamp": "2026-10-26T01:20:00Z",
+    "stage": "R3-autonomy",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [],
+    "parent_task": null,
+    "context": "R3 — one-page autonomy policy for one workflow",
+    "request": "Pick one workflow; map tasks to autonomy levels, controls, promotion evidence, approvers; state the day-one level given two of six engineers are new.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "read_files",
+      "fs_write",
+      "getDiagnostics"
+    ],
+    "suggestion": "Choose month-end log triage; levels L0-L3; day-one = L1 (Assist) with one supervised L2 pilot.",
+    "human_decision": "Policy to be owned/ratified by the team's tech lead and incident commander.",
+    "action_verification": "Levels, controls, and approvers grounded in the two month-end incidents; day-one rationale ties to the two new engineers and absent track record.",
+    "limitation": null,
+    "status": "applied",
+    "artifacts": [
+      "docs/autonomy-policy-month-end-log-triage.md"
+    ]
+  },
+  {
+    "id": "20261026T014000Z-r4-review-eval",
+    "timestamp": "2026-10-26T01:40:00Z",
+    "stage": "R4-eval",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [],
+    "parent_task": null,
+    "context": "R4 — review evaluation over the ten fixed cases, run three times, plus two added cases and one changed variable",
+    "request": "Run the eval 3x against one prompt; report caught/missed/false-alarm rates; add two cases (>=1 clean); change exactly one variable and re-run; state improvement and confidence.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "read_files",
+      "fs_write",
+      "fs_append",
+      "str_replace"
+    ],
+    "suggestion": "Add case-11 (defect: sync-over-async .Result) and case-12 (clean: guard extraction); change only the prompt (v1->v2).",
+    "human_decision": null,
+    "action_verification": "Ten-case baseline 81.0% caught / 19.0% missed / 11.1% false alarm; v2 improved on every metric; per-run results table recorded.",
+    "limitation": "Confidence LOW at n=12x3 — gain is ~3 correlated instances and 1 false-alarm event; v2 was tuned on the test set; AI scored its own output (conflict of interest, disclosed).",
+    "status": "applied",
+    "artifacts": [
+      "ops/evals/cases/case-11.diff",
+      "ops/evals/cases/case-12.diff",
+      "ops/evals/results.csv",
+      "ops/evals/report.md"
+    ]
+  },
+  {
+    "id": "20261026T020000Z-r5-risk-audit-measurement",
+    "timestamp": "2026-10-26T02:00:00Z",
+    "stage": "R5-risk",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [],
+    "parent_task": null,
+    "context": "R5 — lethal-trifecta risk audit + pre-rotation measurement baseline",
+    "request": "Audit the agent setup against the lethal trifecta and name the legs; redesign to remove one or accept in writing with a revisit trigger. Plan the DORA baseline and capture two numbers from the repo/CI today.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "read_files",
+      "list_directory",
+      "grep_search",
+      "execute_pwsh",
+      "fs_write",
+      "str_replace",
+      "getDiagnostics"
+    ],
+    "suggestion": "All three legs present; sever leg 3 (external comms); capture change-failure-rate and deployment cadence from ops/pipeline/run-timings.csv.",
+    "human_decision": "Decision recorded: remove leg 3; accept residual legs 1+2 with a four-condition revisit trigger.",
+    "action_verification": "Change failure rate 0/8 on main (10% across 20 runs) and deployment cadence ~58h median computed from run-timings.csv; refused to invent a lead-time median from 6 seeded commits.",
+    "limitation": "ops/README.md has no literal 'agent setup' section — the audited setup was stated explicitly; full lead time needs an Azure deploy log not present in the repo.",
+    "status": "applied",
+    "artifacts": [
+      "docs/risk-audit-and-measurement-plan.md"
+    ]
+  },
+  {
+    "id": "20261026T030000Z-handin-logs-and-summaries",
+    "timestamp": "2026-10-26T03:00:00Z",
+    "stage": "packaging",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [],
+    "parent_task": null,
+    "context": "Package the eight hand-in items, AI augmentation log, and per-item HTML summaries",
+    "request": "Create the AI augmentation log, a submission index, and one HTML summary page per hand-in item (problem statement first, then what was done).",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "fs_write",
+      "list_directory",
+      "getDiagnostics"
+    ],
+    "suggestion": "Add SUBMISSION.md mapping all 8 items to files; build docs/summary/*.html with an index.",
+    "human_decision": "User requested the HTML summaries and, separately, this structured JSONL augmentation log in the reviewer's schema.",
+    "action_verification": "All 8 item pages + index created; no diagnostics; SUBMISSION.md cross-links every deliverable.",
+    "limitation": null,
+    "status": "applied",
+    "artifacts": [
+      "docs/ai-augmentation-log.md",
+      "docs/SUBMISSION.md",
+      "docs/summary/index.html",
+      "docs/summary/item-1-diagrams.html",
+      "docs/summary/item-2-architecture-test.html",
+      "docs/summary/item-3-adr.html",
+      "docs/summary/item-4-autonomy-policy.html",
+      "docs/summary/item-5-review-eval.html",
+      "docs/summary/item-6-risk-audit.html",
+      "docs/summary/item-7-measurement-plan.html",
+      "docs/summary/item-8-ai-log.html"
+    ]
+  },
+  {
+    "id": "20261026T122110Z-git-publish",
+    "timestamp": "2026-10-26T12:21:10Z",
+    "stage": "publish",
+    "agent": "agent",
+    "agent_name": "Kiro",
+    "agent_type": "built-in",
+    "ai_tool": "Kiro IDE",
+    "model": "Auto (task-selected)",
+    "mode": "agent",
+    "related_ids": [],
+    "parent_task": null,
+    "context": "Publish the repository to the participant's GitHub account",
+    "request": "Push the repo to github.com/sandeep-thakur-1895; create the repo, replace origin, ignore .vscode.",
+    "skills_used": [],
+    "subagents_used": [],
+    "mcp_tools_used": [],
+    "tools_used": [
+      "execute_pwsh",
+      "read_files",
+      "fs_append"
+    ],
+    "suggestion": "Gitignore .vscode and the Word ~$ lock file; replace origin; push main.",
+    "human_decision": "User created the GitHub repo and authenticated gh/credentials manually (interactive auth the agent cannot perform).",
+    "action_verification": "git push verified: local and remote main match at 7eadb92, then 6fc88cf after the .mcp.json follow-up; working tree clean.",
+    "limitation": "Authentication required human action; no secrets were committed (config uses portable npx, verified).",
+    "status": "applied",
+    "artifacts": [
+      ".gitignore",
+      ".mcp.json"
+    ]
+  }
+]

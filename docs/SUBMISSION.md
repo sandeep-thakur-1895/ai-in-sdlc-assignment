@@ -12,12 +12,12 @@ repository root.
 | 5 | Your two added evaluation cases, and a results table covering three runs plus the changed-variable run | Added cases `ops/evals/cases/case-11.diff`, `ops/evals/cases/case-12.diff`; results `ops/evals/results.csv`; report + tables `ops/evals/report.md` |
 | 6 | The risk audit, with a decision recorded | `docs/risk-audit-and-measurement-plan.md` — Part A (lethal-trifecta audit; decision: sever leg 3 + accepted residual with revisit trigger) |
 | 7 | The measurement plan, with the two numbers you captured | `docs/risk-audit-and-measurement-plan.md` — Part B (change failure rate 0/8 on `main`, 10% overall; deployment cadence ~58 h median) |
-| 8 | AI augmentation logs | `docs/ai-augmentation-log.md` |
+| 8 | AI augmentation logs | `docs/ai-augmentation-log.jsonl` (structured, reviewer schema) + `docs/ai-augmentation-log.md` (readable summary) |
 
 ## Supporting material (not itemised but referenced above)
 
 - `docs/mcp-setup.md` — MCP + toolchain setup (Mermaid MCP, .NET 8 SDK prerequisites).
-- `.mcp.json`, `.kiro/settings/mcp.json` — committed MCP server configuration.
+- `.mcp.json` — committed MCP server configuration.
 - `ops/` — the evidence packs the artifacts are grounded in (incidents, pipeline, evals).
 
 ## How to verify each item

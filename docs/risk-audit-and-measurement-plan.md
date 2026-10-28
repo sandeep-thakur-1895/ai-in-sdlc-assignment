@@ -20,7 +20,7 @@ the planned production described in `ops/`:
   (`ops/evals/README.md`: "Give the agent the case diff and the review prompt below"); the
   month-end log-triage agent in `docs/autonomy-policy-month-end-log-triage.md` reads production
   logs/metrics.
-- An **MCP-enabled agent** configured in this repo: `.mcp.json` and `.kiro/settings/mcp.json`
+- An **MCP-enabled agent** configured in this repo: `.mcp.json`
   define a **Playwright MCP** (drives a real browser) and a **Mermaid MCP** (`npx`-launched),
   both running locally with whatever the developer's shell can reach.
 - The **planned production service** (`ops/`): Azure SQL (invoice + approval data, 7-year
